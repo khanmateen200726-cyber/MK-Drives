@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MK DRIVES</title>
+<link rel="icon" href="logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+<style>
+:root{ --primary:#0f172a; --accent:#3b82f6; --bg:#f8fafc; }
+*{ margin:0; padding:0; box-sizing:border-box; font-family:'Plus Jakarta Sans',sans-serif; }
+body{ background:var(--bg); }
+
+/* NAVBAR - ORIGINAL */
+nav{ background:var(--primary); padding:15px 8%; display:flex; justify-content:space-between; align-items:center; position: sticky; top: 0; z-index: 1000; }
+.logo{ display:flex; align-items:center; gap:10px; color:white; font-weight:800; }
+.logo img{ height:45px; }
+.nav-links a{ color:#cbd5e1; margin-left:20px; text-decoration:none; font-weight:600; }
+.login-btn{ background:var(--accent); padding:8px 18px; border-radius:8px; color:white !important; border:none; cursor:pointer; }
+
+/* HERO - ORIGINAL */
+.hero{ background: linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6)), url("car1.png"); background-size:cover; background-position:center; color:white; padding:150px 8%; text-align:center; position: relative; }
+.hero h1{ font-size:55px; margin-bottom:20px; }
+.hero p{ font-size:18px; margin-bottom:30px; }
+
+/* MAP BOX - FIXED */
+#map { width: 84%; height: 350px; margin: 20px auto; border-radius: 15px; border: 3px solid white; display: none; z-index: 1; position: relative; }
+.fare-info { background: white; color: black; padding: 15px; border-radius: 10px; width: fit-content; margin: 10px auto; display: none; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+
+/* BUTTONS - ORIGINAL */
+.book-btn { background: white; color: black; padding: 15px 25px; border: none; font-size: 16px; border-radius: 8px; cursor: pointer; font-weight: bold; margin: 10px; display: inline-flex; align-items: center; gap: 10px; text-decoration: none; }
+.driver-btn { background: #10b981; color: white; }
+
+/* SECTIONS - ORIGINAL */
+.section{ padding:90px 8%; text-align:center; }
+.grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:30px; margin-top:40px; }
+.card{ background:white; padding:40px; border-radius:15px; box-shadow:0 10px 30px rgba(0,0,0,0.05); }
+
+/* CAR SHOWCASE - ORIGINAL */
+.cars{ display:grid; grid-template-columns:1fr 1fr; gap:40px; padding:80px 8%; align-items:center; }
+.cars img{ width:100%; border-radius:20px; box-shadow:0 20px 40px rgba(0,0,0,0.2); }
+
+/* MODAL FOR DRIVER */
+.modal { display: none; position: fixed; z-index: 2000; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); align-items: center; justify-content: center; }
+.modal-content { background: white; padding: 30px; border-radius: 20px; width: 350px; text-align: center; }
+.modal-content input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; }
+
+/* FOOTER - ORIGINAL */
+footer{ background:var(--primary); color:white; padding:60px 8%; text-align:center; }
+footer img{ height:45px; margin-bottom:10px; }
+</style>
+</head>
+<body>
+
+<nav>
+<div class="logo"><img src="logo.png"><span>MK DRIVES</span></div>
+<div class="nav-links">
+<a href="index.html">Home</a>
+<a href="#" onclick="showBooking()">Book Ride</a>
+<a href="#" onclick="openDriverForm()">Drive</a>
+<a href="#">Business</a>
+<a href="#">Support</a>
+<a href="signup.html" class="login-btn">Sign Up</a>
+</div>
+</nav>
+
+<section class="hero">
+<h1>Go anywhere with MK DRIVES</h1>
+<p>Affordable, Reliable and Professional Mobility.</p>
+
+<div id="map"></div>
+<div id="fareInfo" class="fare-info">
+<p id="kmText">Distance: 0 km</p>
+<h3 id="priceText">Fare: PKR 0</h3>
+<button class="login-btn" onclick="saveRide()">Confirm Booking</button>
+</div>
+
+<div class="btn-container">
+<button class="book-btn" onclick="showBooking()">🚗 Book a Ride</button>
+<button class="book-btn driver-btn" onclick="openDriverForm()">🤝 Become a Driver</button>
+</div>
+</section>
+
+<section class="section">
+<h2>Our Solutions</h2>
+<div class="grid">
+<div class="card"><h3>🚗 MK Premium</h3><p>Comfortable city rides with professional drivers.</p></div>
+<div class="card"><h3>📦 MK Courier</h3><p>Fast delivery across the city.</p></div>
+<div class="card"><h3>🏍️ MK Moto</h3><p>Beat traffic with fast bike rides.</p></div>
+</div>
+</section>
+
+<section class="cars">
+<img src="car1.png">
+<div>
+<h2>MK DRIVES Fleet</h2>
+<p>Our modern vehicles provide comfortable travel across cities. From compact cars to vans we provide safe and reliable transportation.</p>
+</div>
+</section>
+
+<section class="cars">
+<div>
+<h2>Professional Transport</h2>
+<p>MK DRIVES connects passengers with trusted drivers to deliver a smooth and safe experience.</p>
+</div>
+<img src="car2.png">
+</section>
+
+<div id="driverModal" class="modal">
+<div class="modal-content">
+<h2>Register as Driver</h2>
+<form id="driverForm">
+<input type="text" id="dName" placeholder="Full Name" required>
+<input type="tel" id="dPhone" placeholder="WhatsApp Number" required>
+<input type="text" id="dCar" placeholder="Car Model (e.g. Bolan)" required>
+<button type="submit" class="login-btn" style="width:100%; background:#10b981;">Apply Now</button>
+<p onclick="closeDriverForm()" style="margin-top:10px; cursor:pointer; color:red;">Close</p>
+</form>
+</div>
+</div>
+
+<footer>
+<img src="logo.png">
+<p>© 2026 MK DRIVES | Designed by Mateen Khan</p>
+</footer>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+let map, pickup, dropoff, pickupMarker, dropoffMarker;
+let isSelectingPickup = true;
+let currentFare = 0;
+
+// YAHAN APNA APPS SCRIPT URL DALAIN
+const WEB_APP_URL = 'YOUR_APPS_SCRIPT_URL_HERE';
+
+function showBooking() {
+document.getElementById('map').style.display = 'block';
+document.getElementById('map').scrollIntoView({ behavior: 'smooth' });
+if (!map) {
+map = L.map('map').setView([30.1575, 71.5249], 13);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+map.on('click', handleMapClick);
+}
+}
+
+function handleMapClick(e) {
+if (isSelectingPickup) {
+pickup = e.latlng;
+if (pickupMarker) map.removeLayer(pickupMarker);
+pickupMarker = L.marker(pickup).addTo(map).bindPopup("Pickup").openPopup();
+isSelectingPickup = false;
+} else {
+dropoff = e.latlng;
+if (dropoffMarker) map.removeLayer(dropoffMarker);
+dropoffMarker = L.marker(dropoff).addTo(map).bindPopup("Destination").openPopup();
+calculateFare();
+isSelectingPickup = true;
+}
+}
+
+function calculateFare() {
+const dist = (map.distance(pickup, dropoff) / 1000).toFixed(2);
+currentFare = (dist * 60).toFixed(0);
+document.getElementById('fareInfo').style.display = 'block';
+document.getElementById('kmText').innerText = `Distance: ${dist} km`;
+document.getElementById('priceText').innerText = `Fare: PKR ${currentFare}`;
+}
+
+function saveRide() {
+alert("Saving ride to Mateen boss's sheet...");
+const data = new FormData();
+data.append('name', 'User');
+data.append('pickup', pickup.toString());
+data.append('destination', dropoff.toString());
+data.append('fare', currentFare);
+
+fetch(WEB_APP_URL, { method: 'POST', body: data })
+.then(() => alert("Ride Saved!"))
+.catch(() => alert("Please add Web App URL in code!"));
+}
+
+function openDriverForm() { document.getElementById('driverModal').style.display = 'flex'; }
+function closeDriverForm() { document.getElementById('driverModal').style.display = 'none'; }
+
+document.getElementById('driverForm').onsubmit = function(e) {
+e.preventDefault();
+alert("Driver application sent to Mateen boss!");
+closeDriverForm();
+}
+</script>
+</body>
+</html>
