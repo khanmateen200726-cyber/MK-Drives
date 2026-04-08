@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MK DRIVES - Sign Up</title>
+<link rel="icon" href="logo.png" type="image/png">
+
+<style>
+body {
+font-family: 'Plus Jakarta Sans', sans-serif;
+background: #0f172a;
+color: white;
+display: flex;
+justify-content: center;
+align-items: center;
+height: 100vh;
+margin: 0;
+}
+.box {
+background: #1e293b;
+padding: 40px;
+border-radius: 15px;
+width: 350px;
+border: 1px solid #334155;
+box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+h2 { text-align: center; margin-bottom: 25px; color: #3b82f6; font-weight: 800; }
+input {
+width: 100%;
+padding: 12px;
+margin: 10px 0;
+border: 1px solid #334155;
+border-radius: 8px;
+background: #0f172a;
+color: white;
+outline: none;
+transition: 0.3s;
+}
+input:focus { border-color: #3b82f6; }
+button {
+width: 100%;
+padding: 14px;
+background: #3b82f6;
+color: white;
+border: none;
+border-radius: 8px;
+font-weight: bold;
+cursor: pointer;
+margin-top: 10px;
+transition: 0.3s;
+}
+button:hover { background: #2563eb; }
+button:disabled { background: #475569; cursor: not-allowed; }
+.footer-text { text-align: center; margin-top: 15px; font-size: 13px; color: #94a3b8; }
+.footer-text a { color: #3b82f6; text-decoration: none; }
+</style>
+</head>
+<body>
+
+<div class="box">
+<h2>Create Account</h2>
+<input type="text" id="name" placeholder="Full Name">
+<input type="text" id="cnic" placeholder="CNIC (36302-XXXXXXX-X)">
+<input type="email" id="email" placeholder="Email Address">
+<input type="password" id="pass" placeholder="Password">
+<button id="subBtn" onclick="submitToSheet()">Create Account</button>
+<div class="footer-text">
+Already have an account? <a href="index.html">Login</a>
+</div>
+</div>
+
+<script>
+function submitToSheet() {
+const btn = document.getElementById('subBtn');
+// Aapka naya link main ne yahan laga diya hai
+const scriptURL = 'https://script.google.com/macros/s/AKfycbzW6Jg54rXZTy8q-eQAn3j1e20xE60xnUxloljjXn3BpGBhClh6WRxqzMBtBVB2-nN7sQ/exec';
+
+const data = {
+name: document.getElementById('name').value,
+cnic: document.getElementById('cnic').value,
+email: document.getElementById('email').value,
+password: document.getElementById('pass').value
+};
+
+// Basic validation
+if(!data.name || !data.cnic || !data.email || !data.password) {
+alert("Mateen boss, saari fields bharna zaroori hain!");
+return;
+}
+
+btn.innerText = "Processing...";
+btn.disabled = true;
+
+fetch(scriptURL, {
+method: 'POST',
+mode: 'no-cors', // Critical: Bypasses the redirection error
+headers: { 'Content-Type': 'application/json' },
+body: JSON.stringify(data)
+})
+.then(() => {
+alert("Mubarak ho Mateen boss! Data save ho gaya.");
+// Clear fields and redirect
+document.querySelectorAll('input').forEach(i => i.value = '');
+window.location.href = "index.html";
+})
+.catch(err => {
+console.error('Error:', err);
+alert("Kuch masla hua, lekin check karein shayad data sheet mein chala gaya ho.");
+btn.innerText = "Create Account";
+btn.disabled = false;
+});
+}
+</script>
+
+</body>
+</html>
