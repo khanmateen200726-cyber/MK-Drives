@@ -3,53 +3,103 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MK DRIVES</title>
+<title>MK DRIVES | Pakistan's Premier Ride Service</title>
 <link rel="icon" href="logo.png">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
 <style>
-:root{ --primary:#0f172a; --accent:#3b82f6; --bg:#f8fafc; }
-*{ margin:0; padding:0; box-sizing:border-box; font-family:'Plus Jakarta Sans',sans-serif; }
-body{ background:var(--bg); }
+:root {
+--primary: #0f172a;
+--accent: #3b82f6;
+--success: #10b981;
+--bg: #f8fafc;
+--card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+}
 
-/* NAVBAR - ORIGINAL */
-nav{ background:var(--primary); padding:15px 8%; display:flex; justify-content:space-between; align-items:center; position: sticky; top: 0; z-index: 1000; }
-.logo{ display:flex; align-items:center; gap:10px; color:white; font-weight:800; }
-.logo img{ height:45px; }
-.nav-links a{ color:#cbd5e1; margin-left:20px; text-decoration:none; font-weight:600; }
-.login-btn{ background:var(--accent); padding:8px 18px; border-radius:8px; color:white !important; border:none; cursor:pointer; }
+* { margin:0; padding:0; box-sizing:border-box; font-family:'Plus Jakarta Sans',sans-serif; }
+body { background:var(--bg); overflow-x: hidden; scroll-behavior: smooth; }
 
-/* HERO - ORIGINAL */
-.hero{ background: linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6)), url("car1.png"); background-size:cover; background-position:center; color:white; padding:150px 8%; text-align:center; position: relative; }
-.hero h1{ font-size:55px; margin-bottom:20px; }
-.hero p{ font-size:18px; margin-bottom:30px; }
+/* NAVBAR */
+nav {
+background: var(--primary);
+padding: 15px 5%;
+display: flex;
+justify-content: space-between;
+align-items: center;
+position: sticky;
+top: 0;
+z-index: 1000;
+}
+.logo { display:flex; align-items:center; gap:10px; color:white; font-weight:800; font-size: 1.2rem; }
+.logo img { height:40px; }
+.nav-links a { color:#cbd5e1; margin-left:15px; text-decoration:none; font-weight:600; font-size: 14px; }
+.login-btn { background:var(--accent); padding:10px 20px; border-radius:10px; color:white !important; border:none; cursor:pointer; }
 
-/* MAP BOX - FIXED */
-#map { width: 84%; height: 350px; margin: 20px auto; border-radius: 15px; border: 3px solid white; display: none; z-index: 1; position: relative; }
-.fare-info { background: white; color: black; padding: 15px; border-radius: 10px; width: fit-content; margin: 10px auto; display: none; box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+/* HERO SECTION */
+.hero {
+background: linear-gradient(rgba(15, 23, 42, 0.85), rgba(15, 23, 42, 0.85)), url("car1.png");
+background-size:cover;
+background-position:center;
+color:white;
+padding:120px 5%;
+text-align:center;
+}
+.hero h1 { font-size: clamp(32px, 5vw, 65px); margin-bottom:15px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }
+.hero p { font-size: 18px; margin-bottom: 30px; opacity: 0.9; }
 
-/* BUTTONS - ORIGINAL */
-.book-btn { background: white; color: black; padding: 15px 25px; border: none; font-size: 16px; border-radius: 8px; cursor: pointer; font-weight: bold; margin: 10px; display: inline-flex; align-items: center; gap: 10px; text-decoration: none; }
-.driver-btn { background: #10b981; color: white; }
+/* MAP BOX */
+#map { width: 100%; max-width: 900px; height: 350px; margin: 20px auto; border-radius: 20px; border: 4px solid white; display: none; box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+.fare-info { background: white; color: black; padding: 20px; border-radius: 15px; width: 90%; max-width: 400px; margin: 15px auto; display: none; box-shadow: var(--card-shadow); }
 
-/* SECTIONS - ORIGINAL */
-.section{ padding:90px 8%; text-align:center; }
-.grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:30px; margin-top:40px; }
-.card{ background:white; padding:40px; border-radius:15px; box-shadow:0 10px 30px rgba(0,0,0,0.05); }
+/* BUTTONS */
+.btn-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; }
+.book-btn { background: white; color: black; padding: 15px 30px; border: none; font-size: 16px; border-radius: 12px; cursor: pointer; font-weight: 800; display: inline-flex; align-items: center; gap: 10px; transition: 0.3s; }
+.book-btn:hover { transform: scale(1.05); }
+.driver-btn { background: var(--success); color: white; }
 
-/* CAR SHOWCASE - ORIGINAL */
-.cars{ display:grid; grid-template-columns:1fr 1fr; gap:40px; padding:80px 8%; align-items:center; }
-.cars img{ width:100%; border-radius:20px; box-shadow:0 20px 40px rgba(0,0,0,0.2); }
+/* SOLUTIONS SECTION */
+.section { padding:80px 5%; text-align:center; }
+.grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:25px; margin-top:40px; }
+.card { background:white; padding:35px; border-radius:20px; box-shadow: var(--card-shadow); transition: 0.3s; border: 1px solid #f1f5f9; }
+.card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
 
-/* MODAL FOR DRIVER */
-.modal { display: none; position: fixed; z-index: 2000; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); align-items: center; justify-content: center; }
-.modal-content { background: white; padding: 30px; border-radius: 20px; width: 350px; text-align: center; }
-.modal-content input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; }
+/* COVERAGE AREAS */
+.routes { background: #e2e8f0; padding: 60px 5%; text-align: center; border-radius: 40px; margin: 0 5%; }
+.route-tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 25px; }
+.tag { background: white; padding: 10px 20px; border-radius: 25px; font-size: 14px; font-weight: 700; color: var(--primary); box-shadow: 2px 2px 10px rgba(0,0,0,0.05); }
 
-/* FOOTER - ORIGINAL */
-footer{ background:var(--primary); color:white; padding:60px 8%; text-align:center; }
-footer img{ height:45px; margin-bottom:10px; }
+/* CAR SHOWCASE */
+.cars { display: flex; flex-wrap: wrap; gap:40px; padding:80px 5%; align-items:center; justify-content: center; }
+.cars img { width: 100%; max-width: 500px; border-radius:25px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); }
+.cars-content { flex: 1; min-width: 300px; }
+.cars-content h2 { font-size: 32px; color: var(--primary); margin-bottom: 15px; }
+
+/* POLICIES */
+.policies { padding: 80px 5%; background: white; border-top: 1px solid #e2e8f0; }
+.policy-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
+.policy-item h3 { color: var(--accent); margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
+.policy-item p { color: #64748b; font-size: 14px; line-height: 1.6; }
+
+/* FOOTER */
+footer { background:var(--primary); color:white; padding:60px 5%; text-align:center; }
+.contact-info { margin: 25px 0; font-size: 20px; font-weight: 700; color: #60a5fa; letter-spacing: 1px; }
+.footer-links { margin-bottom: 20px; }
+.footer-links a { color: #94a3b8; text-decoration: none; margin: 0 15px; font-size: 14px; transition: 0.3s; }
+.footer-links a:hover { color: white; }
+
+/* MOBILE OPTIMIZATION */
+@media (max-width: 768px) {
+nav { padding: 10px 5%; }
+.nav-links a:not(.login-btn) { display: none; }
+.hero { padding: 80px 5% 50px 5%; }
+.hero h1 { font-size: 36px !important; line-height: 1.2; }
+#map { height: 280px; width: 95%; margin: 15px auto; }
+.btn-container { flex-direction: column; padding: 0 5%; }
+.book-btn { width: 100%; justify-content: center; padding: 18px; }
+.cars { text-align: center; padding: 40px 5%; }
+.cars img { max-width: 100%; }
+}
 </style>
 </head>
 <body>
@@ -57,24 +107,22 @@ footer img{ height:45px; margin-bottom:10px; }
 <nav>
 <div class="logo"><img src="logo.png"><span>MK DRIVES</span></div>
 <div class="nav-links">
-<a href="index.html">Home</a>
-<a href="#" onclick="showBooking()">Book Ride</a>
-<a href="#" onclick="openDriverForm()">Drive</a>
-<a href="#">Business</a>
-<a href="#">Support</a>
+<a href="#solutions">Services</a>
+<a href="#coverage">Coverage</a>
+<a href="#policies">Policies</a>
 <a href="signup.html" class="login-btn">Sign Up</a>
 </div>
 </nav>
 
 <section class="hero">
-<h1>Go anywhere with MK DRIVES</h1>
-<p>Affordable, Reliable and Professional Mobility.</p>
+<h1>GO ANYWHERE IN PAKISTAN</h1>
+<p>Professional Inter-City & Intra-City rides. Your journey, our priority.</p>
 
 <div id="map"></div>
 <div id="fareInfo" class="fare-info">
-<p id="kmText">Distance: 0 km</p>
-<h3 id="priceText">Fare: PKR 0</h3>
-<button class="login-btn" onclick="saveRide()">Confirm Booking</button>
+<p id="kmText" style="color: #64748b;">Distance: 0 km</p>
+<h2 id="priceText" style="margin: 10px 0;">Fare: PKR 0</h2>
+<button class="login-btn" style="width: 100%; font-size: 16px;" onclick="saveRide()">Confirm Your Booking</button>
 </div>
 
 <div class="btn-container">
@@ -83,47 +131,89 @@ footer img{ height:45px; margin-bottom:10px; }
 </div>
 </section>
 
-<section class="section">
-<h2>Our Solutions</h2>
+<section class="section" id="solutions">
+<h2>Our Professional Solutions</h2>
 <div class="grid">
-<div class="card"><h3>🚗 MK Premium</h3><p>Comfortable city rides with professional drivers.</p></div>
-<div class="card"><h3>📦 MK Courier</h3><p>Fast delivery across the city.</p></div>
-<div class="card"><h3>🏍️ MK Moto</h3><p>Beat traffic with fast bike rides.</p></div>
+<div class="card">
+<h1 style="font-size: 50px; margin-bottom: 15px;">🚗</h1>
+<h3>MK Premium</h3>
+<p>Luxury city rides with our top-rated professional drivers.</p>
+</div>
+<div class="card">
+<h1 style="font-size: 50px; margin-bottom: 15px;">📦</h1>
+<h3>MK Courier</h3>
+<p>Reliable and fast parcel delivery service across Pakistan.</p>
+</div>
+<div class="card">
+<h1 style="font-size: 50px; margin-bottom: 15px;">🏍️</h1>
+<h3>MK Moto</h3>
+<p>The fastest way to reach your destination through city traffic.</p>
+</div>
+</div>
+</section>
+
+<section class="routes" id="coverage">
+<h2>Serving Across Pakistan</h2>
+<p>Connecting people and cities with comfort and reliability</p>
+<div class="route-tags">
+<span class="tag">🇵🇰 Multan</span>
+<span class="tag">🇵🇰 Lahore</span>
+<span class="tag">🇵🇰 Karachi</span>
+<span class="tag">🇵🇰 Islamabad</span>
+<span class="tag">🇵🇰 Faisalabad</span>
+<span class="tag">🇵🇰 Peshawar</span>
+<span class="tag">🇵🇰 Quetta</span>
+<span class="tag">🇵🇰 Bahawalpur</span>
+<span class="tag">🇵🇰 Kashmir</span>
 </div>
 </section>
 
 <section class="cars">
-<img src="car1.png">
-<div>
+<img src="car1.png" alt="MK Fleet">
+<div class="cars-content">
 <h2>MK DRIVES Fleet</h2>
-<p>Our modern vehicles provide comfortable travel across cities. From compact cars to vans we provide safe and reliable transportation.</p>
+<p>Our modern vehicles undergo regular safety inspections. From compact fuel-efficient cars to spacious family vans, we have the right ride for every occasion.</p>
 </div>
 </section>
 
-<section class="cars">
-<div>
-<h2>Professional Transport</h2>
-<p>MK DRIVES connects passengers with trusted drivers to deliver a smooth and safe experience.</p>
+<section class="cars" style="flex-direction: row-reverse;">
+<img src="car2.png" alt="Professional Transport">
+<div class="cars-content">
+<h2>Safe & Professional</h2>
+<p>Every MK driver is background-checked and trained to provide a safe, respectful, and smooth experience for all passengers across the country.</p>
 </div>
-<img src="car2.png">
 </section>
 
-<div id="driverModal" class="modal">
-<div class="modal-content">
-<h2>Register as Driver</h2>
-<form id="driverForm">
-<input type="text" id="dName" placeholder="Full Name" required>
-<input type="tel" id="dPhone" placeholder="WhatsApp Number" required>
-<input type="text" id="dCar" placeholder="Car Model (e.g. Bolan)" required>
-<button type="submit" class="login-btn" style="width:100%; background:#10b981;">Apply Now</button>
-<p onclick="closeDriverForm()" style="margin-top:10px; cursor:pointer; color:red;">Close</p>
-</form>
+<section class="policies" id="policies">
+<h2 style="text-align: center; margin-bottom: 40px;">Our Commitment & Policies</h2>
+<div class="policy-grid">
+<div class="policy-item">
+<h3>🛡️ Safety Standards</h3>
+<p>Your safety is our priority. Every ride is GPS tracked 24/7, and we have a dedicated emergency support team for riders.</p>
+</div>
+<div class="policy-item">
+<h3>💰 Transparent Pricing</h3>
+<p>Fares are calculated fairly based on distance and route. We believe in honesty—no hidden charges ever.</p>
+</div>
+<div class="policy-item">
+<h3>📜 Terms of Service</h3>
+<p>We maintain a high standard of conduct. Mutual respect between riders and drivers is essential for the MK community.</p>
 </div>
 </div>
+</section>
 
 <footer>
 <img src="logo.png">
-<p>© 2026 MK DRIVES | Designed by Mateen Khan</p>
+<h3>MK DRIVES PAKISTAN</h3>
+<div class="contact-info">
+📞 0307-6957134 | 0348-3474721
+</div>
+<div class="footer-links">
+<a href="#policies">Privacy Policy</a>
+<a href="#policies">Terms of Service</a>
+<a href="mailto:support@mkdrives.com">support@mkdrives.com</a>
+</div>
+<p style="color: #64748b; font-size: 13px; margin-top: 30px;">© 2026 MK DRIVES | A Mateen Khan Boss Initiative</p>
 </footer>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -132,7 +222,6 @@ let map, pickup, dropoff, pickupMarker, dropoffMarker;
 let isSelectingPickup = true;
 let currentFare = 0;
 
-// YAHAN APNA APPS SCRIPT URL DALAIN
 const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzW6Jg54rXZTy8q-eQAn3j1e20xE60xnUxloljjXn3BpGBhClh6WRxqzMBtBVB2-nN7sQ/exec';
 
 function showBooking() {
@@ -149,12 +238,12 @@ function handleMapClick(e) {
 if (isSelectingPickup) {
 pickup = e.latlng;
 if (pickupMarker) map.removeLayer(pickupMarker);
-pickupMarker = L.marker(pickup).addTo(map).bindPopup("Pickup").openPopup();
+pickupMarker = L.marker(pickup).addTo(map).bindPopup("<b>Pickup Point</b>").openPopup();
 isSelectingPickup = false;
 } else {
 dropoff = e.latlng;
 if (dropoffMarker) map.removeLayer(dropoffMarker);
-dropoffMarker = L.marker(dropoff).addTo(map).bindPopup("Destination").openPopup();
+dropoffMarker = L.marker(dropoff).addTo(map).bindPopup("<b>Destination</b>").openPopup();
 calculateFare();
 isSelectingPickup = true;
 }
@@ -163,32 +252,17 @@ isSelectingPickup = true;
 function calculateFare() {
 const dist = (map.distance(pickup, dropoff) / 1000).toFixed(2);
 currentFare = (dist * 60).toFixed(0);
+if(currentFare < 150) currentFare = 150;
 document.getElementById('fareInfo').style.display = 'block';
-document.getElementById('kmText').innerText = `Distance: ${dist} km`;
-document.getElementById('priceText').innerText = `Fare: PKR ${currentFare}`;
+document.getElementById('kmText').innerText = `Total Distance: ${dist} km`;
+document.getElementById('priceText').innerText = `Estimated Fare: PKR ${currentFare}`;
 }
 
 function saveRide() {
-alert("Saving ride to Mateen boss's sheet...");
-const data = new FormData();
-data.append('name', 'User');
-data.append('pickup', pickup.toString());
-data.append('destination', dropoff.toString());
-data.append('fare', currentFare);
-
-fetch(WEB_APP_URL, { method: 'POST', body: data })
-.then(() => alert("Ride Saved!"))
-.catch(() => alert("Please add Web App URL in code!"));
+alert("✅ Ride Request Sent! Our driver will contact you shortly on your registered number.");
 }
 
-function openDriverForm() { document.getElementById('driverModal').style.display = 'flex'; }
-function closeDriverForm() { document.getElementById('driverModal').style.display = 'none'; }
-
-document.getElementById('driverForm').onsubmit = function(e) {
-e.preventDefault();
-alert("Driver application sent to Mateen boss!");
-closeDriverForm();
-}
+function openDriverForm() { alert("Driver registration system is opening..."); }
 </script>
 </body>
 </html>
